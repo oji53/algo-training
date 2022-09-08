@@ -3,39 +3,46 @@
 #include <climits>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 #define rep2(i, s, n) for (int i = (s); i < (int)(n); i++)
 #define all(x) (x).begin(), (x).end()
+#define yes "Yes"
+#define no "No"
 using ll = long long;
 
 int main() {
-  vector<int> a(3);
-  rep(i, 3) cin >> a[i];
-  int ans = 0;
+  int n;
+  cin >> n;
+  int a[n + 1];
+  ll sum = 0;
 
-  sort(all(a));
-  int max_num = a[2];
-
-  if ((2 * a[2] - a[1] - a[0]) % 2 != 0)
-    max_num += 1;
-
-  while (true) {
-    if (a[0] == max_num && a[1] == max_num && a[2] == max_num)
-      break;
-    sort(all(a));
-    if (a[2] != max_num) {
-      a[0] += 1;
-      a[2] += 1;
-    } else {
-      if (a[0] != a[1]) {
-        a[0] += 2;
-      } else {
-        a[0] += 1;
-        a[1] += 1;
-      }
-    }
-    ans += 1;
+  a[0] = 0;
+  rep2(i, 1, n + 1) cin >> a[i];
+  rep2(i, 0, n + 1) {
+    if (i == n)
+      sum += abs(a[i] - a[0]);
+    else
+      sum += abs(a[i] - a[i + 1]);
   }
-  cout << ans << endl;
+
+  rep2(i, 1, n + 1) {
+    ll res = 0;
+    if (i != n) {
+      res = sum - abs(a[i] - a[i - 1]) - abs(a[i] - a[i + 1]) +
+            abs(a[i - 1] - a[i + 1]);
+
+      // cout << sum - abs(a[i] - a[i - 1]) - abs(a[i] - a[i + 1]) +
+      //             abs(a[i - 1] - a[i + 1])
+      //      << endl;
+    } else {
+      res =
+          sum - abs(a[i] - a[i - 1]) - abs(a[i] - a[0]) + abs(a[i - 1] - a[0]);
+      // cout << sum - abs(a[i] - a[i - 1]) - abs(a[i] - a[0]) +
+      //             abs(a[i - 1] - a[0])
+      // << endl;
+    }
+    printf("%lld\n", res);
+  }
 }
